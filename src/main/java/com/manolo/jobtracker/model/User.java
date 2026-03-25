@@ -4,7 +4,8 @@ import com.manolo.jobtracker.model.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 @Entity
 @Getter
@@ -28,5 +29,17 @@ public class User {
     private Role role;
 
     @OneToMany(mappedBy = "user")
-    private List<JobApplication>  applications;
+    private Set<JobApplication> applications;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof User user)) return false;
+        return id != null && id.equals(user.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(id);
+    }
 }
