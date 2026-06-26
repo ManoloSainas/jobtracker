@@ -1,5 +1,6 @@
 package com.manolo.jobtracker.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.manolo.jobtracker.model.enums.Status;
 import jakarta.persistence.*;
 import lombok.*;

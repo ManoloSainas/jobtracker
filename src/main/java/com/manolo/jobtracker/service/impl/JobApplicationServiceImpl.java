@@ -3,12 +3,14 @@ package com.manolo.jobtracker.service.impl;
 import com.manolo.jobtracker.model.JobApplication;
 import com.manolo.jobtracker.repository.JobApplicationRepository;
 import com.manolo.jobtracker.service.JobApplicationService;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 
 import java.util.List;
 
 @Service
+@Transactional
 public class JobApplicationServiceImpl implements JobApplicationService {
 
     private final JobApplicationRepository jobApplicationRepository;

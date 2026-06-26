@@ -3,11 +3,13 @@ package com.manolo.jobtracker.service.impl;
 import com.manolo.jobtracker.model.Tag;
 import com.manolo.jobtracker.repository.TagRepository;
 import com.manolo.jobtracker.service.TagService;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
+@Transactional
 public class TagServiceImpl implements TagService {
 
     private final TagRepository tagRepository;
