@@ -1,18 +1,16 @@
 package com.manolo.jobtracker.model;
 
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.manolo.jobtracker.model.enums.Status;
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDate;
-import java.util.Objects;
+import java.util.HashSet;
 import java.util.Set;
 
 @Entity
 @Getter
 @Setter
-@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class JobApplication {
@@ -21,20 +19,14 @@ public class JobApplication {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(nullable = false)
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    @Column(nullable = false)
     private String company;
-
-    @Column(nullable = false)
     private String position;
-
-    @Column(nullable = false)
     private LocalDate applicationDate;
 
-    @ManyToOne(optional = false)
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
@@ -44,19 +36,29 @@ public class JobApplication {
             joinColumns = @JoinColumn(name = "job_application_id"),
             inverseJoinColumns = @JoinColumn(name = "tag_id")
     )
-    private Set<Tag> tags;
+    private Set<Tag> tags = new HashSet<>();
+
+    @Override
+    public String toString() {
+        return "JobApplication{" +
+                "id=" + id +
+                ", status=" + status +
+                ", company='" + company + '\'' +
+                ", position='" + position + '\'' +
+                ", applicationDate=" + applicationDate +
+                '}';
+    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof JobApplication jobApplication)) return false;
-        return id != null && id.equals(jobApplication.id);
+        if (o == null || getClass() != o.getClass()) return false;
+        JobApplication that = (JobApplication) o;
+        return id != null && id.equals(that.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(id);
+        return getClass().hashCode();
     }
 }
-
-
