@@ -1,21 +1,21 @@
-
 package com.manolo.jobtracker.service;
 
-import com.manolo.jobtracker.model.JobApplication;
+import com.manolo.jobtracker.dto.request.JobApplicationRequestDto;
+import com.manolo.jobtracker.dto.response.JobApplicationResponseDto;
 
 import java.util.List;
 
 public interface JobApplicationService {
 
-    JobApplication createApplication(JobApplication jobApplication);
+    JobApplicationResponseDto createApplication(JobApplicationRequestDto dto);
 
-    JobApplication getById(Long id);
+    JobApplicationResponseDto getById(Long id);
 
-    List<JobApplication> getAll();
+    List<JobApplicationResponseDto> getAll();
 
-    List<JobApplication> getByUserId(Long userId);
+    List<JobApplicationResponseDto> getByUserId(Long userId);
 
-    JobApplication update(Long id, JobApplication jobApplication);
+    JobApplicationResponseDto update(Long id, JobApplicationRequestDto dto);
 
     void delete(Long id);
 }

@@ -1,5 +1,8 @@
 package com.manolo.jobtracker.service.impl;
 
+import com.manolo.jobtracker.dto.request.TagRequestDto;
+import com.manolo.jobtracker.dto.response.TagResponseDto;
+import com.manolo.jobtracker.dto.mapper.TagMapper;
 import com.manolo.jobtracker.model.Tag;
 import com.manolo.jobtracker.repository.TagRepository;
 import com.manolo.jobtracker.service.TagService;
@@ -19,17 +22,32 @@ public class TagServiceImpl implements TagService {
     }
 
     @Override
-    public Tag createTag(Tag tag) {
-        return tagRepository.save(tag);
+    public TagResponseDto createTag(TagRequestDto dto) {
+
+        Tag tag = TagMapper.toEntity(dto);
+
+        tag = tagRepository.save(tag);
+
+        return TagMapper.toResponse(tag);
     }
 
     @Override
-    public List<Tag> getAllTags() {
-        return tagRepository.findAll();
+    @Transactional
+    public List<TagResponseDto> getAllTags() {
+
+        return tagRepository.findAll()
+                .stream()
+                .map(TagMapper::toResponse)
+                .toList();
     }
 
     @Override
-    public Tag getById(Long id) {
-        return tagRepository.findById(id).orElse(null);
+    @Transactional
+    public TagResponseDto getById(Long id) {
+
+        Tag tag = tagRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Tag non trovato con id: " + id));
+
+        return TagMapper.toResponse(tag);
     }
 }

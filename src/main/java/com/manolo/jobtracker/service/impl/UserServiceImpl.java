@@ -1,10 +1,13 @@
 package com.manolo.jobtracker.service.impl;
 
+import com.manolo.jobtracker.dto.request.UserRequestDto;
+import com.manolo.jobtracker.dto.response.UserResponseDto;
+import com.manolo.jobtracker.dto.mapper.UserMapper;
 import com.manolo.jobtracker.model.User;
 import com.manolo.jobtracker.repository.UserRepository;
 import com.manolo.jobtracker.service.UserService;
-import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -19,22 +22,41 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public User createUser(User user) {
-        return userRepository.save(user);
+    public UserResponseDto createUser(UserRequestDto dto) {
+
+        User user = UserMapper.toEntity(dto);
+
+        user = userRepository.save(user);
+
+        return UserMapper.toResponse(user);
     }
 
     @Override
-    public User getUserById(Long id) {
-        return userRepository.findById(id).orElse(null);
+    @Transactional(readOnly = true)
+    public UserResponseDto getUserById(Long id) {
+
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Utente non trovato con id: " + id));
+
+        return UserMapper.toResponse(user);
     }
 
     @Override
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    @Transactional(readOnly = true)
+    public List<UserResponseDto> getAllUsers() {
+
+        return userRepository.findAll()
+                .stream()
+                .map(UserMapper::toResponse)
+                .toList();
     }
 
     @Override
     public void deleteUser(Long id) {
-        userRepository.deleteById(id);
+
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Utente non trovato con id: " + id));
+
+        userRepository.delete(user);
     }
 }

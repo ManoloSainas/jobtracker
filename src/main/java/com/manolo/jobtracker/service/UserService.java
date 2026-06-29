@@ -1,16 +1,17 @@
 package com.manolo.jobtracker.service;
 
-import com.manolo.jobtracker.model.User;
+import com.manolo.jobtracker.dto.request.UserRequestDto;
+import com.manolo.jobtracker.dto.response.UserResponseDto;
 
 import java.util.List;
 
 public interface UserService {
 
-    User createUser(User user);
+    UserResponseDto createUser(UserRequestDto dto);
 
-    User getUserById(Long id);
+    UserResponseDto getUserById(Long id);
 
-    List<User> getAllUsers();
+    List<UserResponseDto> getAllUsers();
 
     void deleteUser(Long id);
 }

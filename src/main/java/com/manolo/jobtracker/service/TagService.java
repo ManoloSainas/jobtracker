@@ -1,14 +1,15 @@
 package com.manolo.jobtracker.service;
 
-import com.manolo.jobtracker.model.Tag;
+import com.manolo.jobtracker.dto.request.TagRequestDto;
+import com.manolo.jobtracker.dto.response.TagResponseDto;
 
 import java.util.List;
 
 public interface TagService {
 
-    Tag createTag(Tag tag);
+    TagResponseDto createTag(TagRequestDto dto);
 
-    List<Tag> getAllTags();
+    List<TagResponseDto> getAllTags();
 
-    Tag getById(Long id);
+    TagResponseDto getById(Long id);
 }
