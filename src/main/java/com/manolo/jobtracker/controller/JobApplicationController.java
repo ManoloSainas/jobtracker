@@ -1,6 +1,7 @@
 package com.manolo.jobtracker.controller;
 
-import com.manolo.jobtracker.model.JobApplication;
+import com.manolo.jobtracker.dto.request.JobApplicationRequestDto;
+import com.manolo.jobtracker.dto.response.JobApplicationResponseDto;
 import com.manolo.jobtracker.service.JobApplicationService;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,28 +18,31 @@ public class JobApplicationController {
     }
 
     @PostMapping
-    public JobApplication create(@RequestBody JobApplication jobApplication) {
-        return service.createApplication(jobApplication);
+    public JobApplicationResponseDto create(@RequestBody JobApplicationRequestDto dto) {
+        return service.createApplication(dto);
     }
 
     @GetMapping
-    public List<JobApplication> getAll() {
+    public List<JobApplicationResponseDto> getAll() {
         return service.getAll();
     }
 
     @GetMapping("/{id}")
-    public JobApplication getById(@PathVariable Long id) {
+    public JobApplicationResponseDto getById(@PathVariable Long id) {
         return service.getById(id);
     }
 
     @GetMapping("/user/{userId}")
-    public List<JobApplication> getByUser(@PathVariable Long userId) {
+    public List<JobApplicationResponseDto> getByUser(@PathVariable Long userId) {
         return service.getByUserId(userId);
     }
 
     @PutMapping("/{id}")
-    public JobApplication update(@PathVariable Long id, @RequestBody JobApplication jobApplication) {
-        return service.update(id, jobApplication);
+    public JobApplicationResponseDto update(
+            @PathVariable Long id,
+            @RequestBody JobApplicationRequestDto dto
+    ) {
+        return service.update(id, dto);
     }
 
     @DeleteMapping("/{id}")

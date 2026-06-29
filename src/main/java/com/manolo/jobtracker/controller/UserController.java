@@ -1,6 +1,7 @@
 package com.manolo.jobtracker.controller;
 
-import com.manolo.jobtracker.model.User;
+import com.manolo.jobtracker.dto.request.UserRequestDto;
+import com.manolo.jobtracker.dto.response.UserResponseDto;
 import com.manolo.jobtracker.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
@@ -17,12 +18,22 @@ public class UserController {
     }
 
     @PostMapping
-    public User create(@RequestBody User user) {
-        return service.createUser(user);
+    public UserResponseDto create(@RequestBody UserRequestDto dto) {
+        return service.createUser(dto);
     }
 
     @GetMapping
-    public List<User> getAll() {
+    public List<UserResponseDto> getAll() {
         return service.getAllUsers();
+    }
+
+    @GetMapping("/{id}")
+    public UserResponseDto getById(@PathVariable Long id) {
+        return service.getUserById(id);
+    }
+
+    @DeleteMapping("/{id}")
+    public void delete(@PathVariable Long id) {
+        service.deleteUser(id);
     }
 }
