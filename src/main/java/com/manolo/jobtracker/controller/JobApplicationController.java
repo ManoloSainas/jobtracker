@@ -3,6 +3,7 @@ package com.manolo.jobtracker.controller;
 import com.manolo.jobtracker.dto.request.JobApplicationRequestDto;
 import com.manolo.jobtracker.dto.response.JobApplicationResponseDto;
 import com.manolo.jobtracker.service.JobApplicationService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public class JobApplicationController {
     }
 
     @PostMapping
-    public JobApplicationResponseDto create(@RequestBody JobApplicationRequestDto dto) {
+    public JobApplicationResponseDto create(@Valid @RequestBody JobApplicationRequestDto dto) {
         return service.createApplication(dto);
     }
 

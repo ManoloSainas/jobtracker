@@ -3,7 +3,10 @@ package com.manolo.jobtracker.service.impl;
 import com.manolo.jobtracker.dto.request.UserRequestDto;
 import com.manolo.jobtracker.dto.response.UserResponseDto;
 import com.manolo.jobtracker.dto.mapper.UserMapper;
+import com.manolo.jobtracker.exception.ConflictException;
+import com.manolo.jobtracker.exception.UserNotFoundException;
 import com.manolo.jobtracker.model.User;
+import com.manolo.jobtracker.model.enums.ErrorCode;
 import com.manolo.jobtracker.repository.UserRepository;
 import com.manolo.jobtracker.service.UserService;
 import org.springframework.stereotype.Service;
@@ -24,6 +27,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public UserResponseDto createUser(UserRequestDto dto) {
 
+        if (userRepository.findByEmail(dto.getEmail()).isPresent()) {
+            throw new ConflictException("Email già registrata: " + dto.getEmail(),
+                    ErrorCode.EMAIL_ALREADY_EXISTS);
+        }
+
         User user = UserMapper.toEntity(dto);
 
         user = userRepository.save(user);
@@ -36,7 +44,7 @@ public class UserServiceImpl implements UserService {
     public UserResponseDto getUserById(Long id) {
 
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Utente non trovato con id: " + id));
+                .orElseThrow(() -> new UserNotFoundException("User non trovato con id: " + id));
 
         return UserMapper.toResponse(user);
     }
@@ -55,7 +63,7 @@ public class UserServiceImpl implements UserService {
     public void deleteUser(Long id) {
 
         User user = userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("Utente non trovato con id: " + id));
+                .orElseThrow(() -> new UserNotFoundException("User non trovato con id: " + id));
 
         userRepository.delete(user);
     }

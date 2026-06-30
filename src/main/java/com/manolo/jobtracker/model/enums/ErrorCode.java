@@ -1,0 +1,25 @@
+package com.manolo.jobtracker.model.enums;
+
+public enum ErrorCode {
+
+    // GENERIC
+    INTERNAL_ERROR,
+
+    // VALIDATION
+    VALIDATION_ERROR,
+    INVALID_REQUEST,
+
+    // NOT FOUND
+    USER_NOT_FOUND,
+    TAG_NOT_FOUND,
+    APPLICATION_NOT_FOUND,
+
+    // CONFLICT
+    EMAIL_ALREADY_EXISTS,
+    TAG_ALREADY_EXISTS,
+    APPLICATION_ALREADY_EXISTS,
+
+    // BUSINESS RULES
+    INVALID_APPLICATION_STATE,
+    INVALID_TAG_LIST
+}

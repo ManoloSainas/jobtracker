@@ -3,6 +3,7 @@ package com.manolo.jobtracker.controller;
 import com.manolo.jobtracker.dto.request.TagRequestDto;
 import com.manolo.jobtracker.dto.response.TagResponseDto;
 import com.manolo.jobtracker.service.TagService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public class TagController {
     }
 
     @PostMapping
-    public TagResponseDto create(@RequestBody TagRequestDto dto) {
+    public TagResponseDto create(@Valid @RequestBody TagRequestDto dto) {
         return service.createTag(dto);
     }
 

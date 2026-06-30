@@ -13,6 +13,15 @@ import java.util.Set;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
+@Table(
+        name = "job_application",
+        uniqueConstraints = {
+                @UniqueConstraint(
+                        name = "uk_user_company_position",
+                        columnNames = {"user_id", "company", "position"}
+                )
+        }
+)
 public class JobApplication {
 
     @Id

@@ -3,6 +3,7 @@ package com.manolo.jobtracker.controller;
 import com.manolo.jobtracker.dto.request.UserRequestDto;
 import com.manolo.jobtracker.dto.response.UserResponseDto;
 import com.manolo.jobtracker.service.UserService;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,7 +19,7 @@ public class UserController {
     }
 
     @PostMapping
-    public UserResponseDto create(@RequestBody UserRequestDto dto) {
+    public UserResponseDto create(@Valid @RequestBody UserRequestDto dto) {
         return service.createUser(dto);
     }
 

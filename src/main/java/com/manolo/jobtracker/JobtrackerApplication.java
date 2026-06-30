@@ -20,5 +20,4 @@ public class JobtrackerApplication {
 			e.printStackTrace();
 		}
 	}
-
 }

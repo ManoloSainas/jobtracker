@@ -15,4 +15,6 @@ public interface JobApplicationRepository extends JpaRepository<JobApplication, 
     List<JobApplication> findByUserIdAndStatus(Long userId, Status status);
 
     List<JobApplication> findByUserIdOrderByApplicationDateDesc(Long userId);
+
+    boolean existsByUserIdAndCompanyAndPosition(Long userId, String company, String position);
 }

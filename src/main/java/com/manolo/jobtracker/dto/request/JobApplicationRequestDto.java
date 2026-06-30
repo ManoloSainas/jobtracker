@@ -2,6 +2,7 @@ package com.manolo.jobtracker.dto.request;
 
 import com.manolo.jobtracker.model.enums.Status;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;
@@ -18,22 +19,21 @@ import java.util.List;
 @AllArgsConstructor
 public class JobApplicationRequestDto {
 
-    @NotNull
+    @NotNull(message = "Status obbligatorio")
     private Status status;
 
-    @NotBlank
+    @NotBlank(message = "Company obbligatoria")
     private String company;
 
-    @NotBlank
+    @NotBlank(message = "Position obbligatoria")
     private String position;
 
-    @NotNull
+    @NotNull(message = "Data applicazione obbligatoria")
     private LocalDate applicationDate;
 
-    @NotNull
+    @NotNull(message = "UserId obbligatorio")
     private Long userId;
 
-    @NotNull
-    @Size(min = 1)
+    @NotEmpty(message = "Devi inserire almeno un tag")
     private List<Long> tagsIds;
 }

@@ -9,6 +9,6 @@ import lombok.*;
 @AllArgsConstructor
 public class TagRequestDto {
 
-    @NotBlank
+    @NotBlank(message = "Nome tag obbligatorio")
     private String name;
 }
