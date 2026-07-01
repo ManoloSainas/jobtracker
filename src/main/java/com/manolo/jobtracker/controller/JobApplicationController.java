@@ -41,7 +41,7 @@ public class JobApplicationController {
     @PutMapping("/{id}")
     public JobApplicationResponseDto update(
             @PathVariable Long id,
-            @RequestBody JobApplicationRequestDto dto
+            @Valid @RequestBody JobApplicationRequestDto dto
     ) {
         return service.update(id, dto);
     }

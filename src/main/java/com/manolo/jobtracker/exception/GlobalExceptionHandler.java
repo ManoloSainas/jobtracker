@@ -4,6 +4,7 @@ import com.manolo.jobtracker.model.enums.ErrorCode;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -128,6 +129,24 @@ public class GlobalExceptionHandler {
                         "Validation failed",
                         request.getRequestURI(),
                         errors
+                )
+        );
+    }
+
+    // JSON NON LEGGIBILE (es. valore sbagliato per un enum, JSON rotto, tipo sbagliato)
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ApiErrorResponse> handleNotReadable(
+            HttpMessageNotReadableException ex,
+            HttpServletRequest request
+    ) {
+        return ResponseEntity.badRequest().body(
+                new ApiErrorResponse(
+                        LocalDateTime.now(),
+                        400,
+                        ErrorCode.VALIDATION_ERROR,
+                        "Richiesta non valida: controlla che tutti i campi abbiano il formato corretto",
+                        request.getRequestURI(),
+                        List.of()
                 )
         );
     }
