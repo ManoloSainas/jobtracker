@@ -1,5 +1,6 @@
 package com.manolo.jobtracker.service;
 
+import com.manolo.jobtracker.dto.request.JobApplicationPatchDto;
 import com.manolo.jobtracker.dto.request.JobApplicationRequestDto;
 import com.manolo.jobtracker.dto.response.JobApplicationResponseDto;
 
@@ -15,7 +16,7 @@ public interface JobApplicationService {
 
     List<JobApplicationResponseDto> getByUserId(Long userId);
 
-    JobApplicationResponseDto update(Long id, JobApplicationRequestDto dto);
+    JobApplicationResponseDto patch(Long id, JobApplicationPatchDto dto);
 
     void delete(Long id);
 }

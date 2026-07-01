@@ -1,9 +1,11 @@
 package com.manolo.jobtracker.controller;
 
+import com.manolo.jobtracker.dto.request.JobApplicationPatchDto;
 import com.manolo.jobtracker.dto.request.JobApplicationRequestDto;
 import com.manolo.jobtracker.dto.response.JobApplicationResponseDto;
 import com.manolo.jobtracker.service.JobApplicationService;
 import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,12 +40,12 @@ public class JobApplicationController {
         return service.getByUserId(userId);
     }
 
-    @PutMapping("/{id}")
-    public JobApplicationResponseDto update(
+    @PatchMapping("/{id}")
+    public ResponseEntity<JobApplicationResponseDto> updateStatus(
             @PathVariable Long id,
-            @Valid @RequestBody JobApplicationRequestDto dto
-    ) {
-        return service.update(id, dto);
+            @RequestBody @Valid JobApplicationPatchDto dto) {
+
+        return ResponseEntity.ok(service.patch(id, dto));
     }
 
     @DeleteMapping("/{id}")

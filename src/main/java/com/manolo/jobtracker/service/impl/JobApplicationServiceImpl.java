@@ -1,6 +1,7 @@
 package com.manolo.jobtracker.service.impl;
 
 import com.manolo.jobtracker.dto.mapper.JobApplicationMapper;
+import com.manolo.jobtracker.dto.request.JobApplicationPatchDto;
 import com.manolo.jobtracker.dto.request.JobApplicationRequestDto;
 import com.manolo.jobtracker.dto.response.JobApplicationResponseDto;
 import com.manolo.jobtracker.exception.ApplicationNotFoundException;
@@ -111,30 +112,22 @@ public class JobApplicationServiceImpl implements JobApplicationService {
     }
 
     @Override
-    public JobApplicationResponseDto update(Long id, JobApplicationRequestDto dto) {
+    public JobApplicationResponseDto patch(Long id, JobApplicationPatchDto dto) {
 
         JobApplication application = jobApplicationRepository.findById(id)
                 .orElseThrow(() -> new ApplicationNotFoundException(
                         "JobApplication non trovata con id: " + id
                 ));
 
-        User user = userRepository.findById(dto.getUserId())
-                .orElseThrow(() -> new UserNotFoundException(
-                        "User non trovato con id: " + dto.getUserId()
-                ));
+        if (dto.getStatus() != null) {
+            application.setStatus(dto.getStatus());
+        }
 
-        Set<Tag> tags = validateAndGetTags(dto.getTagsIds());
+        if (dto.getTagsIds() != null) {
+            application.setTags(validateAndGetTags(dto.getTagsIds()));
+        }
 
-        application.setStatus(dto.getStatus());
-        application.setCompany(dto.getCompany());
-        application.setPosition(dto.getPosition());
-        application.setApplicationDate(dto.getApplicationDate());
-        application.setUser(user);
-        application.setTags(tags);
-
-        application = jobApplicationRepository.save(application);
-
-        return JobApplicationMapper.toResponse(application);
+        return JobApplicationMapper.toResponse(jobApplicationRepository.save(application));
     }
 
     @Override
