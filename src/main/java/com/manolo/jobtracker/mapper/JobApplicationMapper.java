@@ -1,7 +1,5 @@
-package com.manolo.jobtracker.dto.mapper;
+package com.manolo.jobtracker.mapper;
 
-import com.manolo.jobtracker.dto.mapper.TagMapper;
-import com.manolo.jobtracker.dto.mapper.UserMapper;
 import com.manolo.jobtracker.dto.response.JobApplicationResponseDto;
 import com.manolo.jobtracker.model.JobApplication;
 

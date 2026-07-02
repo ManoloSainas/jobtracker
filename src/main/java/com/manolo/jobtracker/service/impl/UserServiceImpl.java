@@ -2,7 +2,7 @@ package com.manolo.jobtracker.service.impl;
 
 import com.manolo.jobtracker.dto.request.UserRequestDto;
 import com.manolo.jobtracker.dto.response.UserResponseDto;
-import com.manolo.jobtracker.dto.mapper.UserMapper;
+import com.manolo.jobtracker.mapper.UserMapper;
 import com.manolo.jobtracker.exception.ConflictException;
 import com.manolo.jobtracker.exception.UserNotFoundException;
 import com.manolo.jobtracker.model.User;

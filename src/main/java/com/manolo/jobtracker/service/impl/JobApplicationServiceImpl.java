@@ -1,6 +1,6 @@
 package com.manolo.jobtracker.service.impl;
 
-import com.manolo.jobtracker.dto.mapper.JobApplicationMapper;
+import com.manolo.jobtracker.mapper.JobApplicationMapper;
 import com.manolo.jobtracker.dto.request.JobApplicationPatchDto;
 import com.manolo.jobtracker.dto.request.JobApplicationRequestDto;
 import com.manolo.jobtracker.dto.response.JobApplicationResponseDto;

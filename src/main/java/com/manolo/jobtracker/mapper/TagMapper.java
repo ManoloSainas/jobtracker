@@ -1,4 +1,4 @@
-package com.manolo.jobtracker.dto.mapper;
+package com.manolo.jobtracker.mapper;
 
 import com.manolo.jobtracker.dto.request.TagRequestDto;
 import com.manolo.jobtracker.dto.response.TagResponseDto;
