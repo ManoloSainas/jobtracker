@@ -91,28 +91,21 @@ Errori gestiti
 
 📦 Struttura del progetto
 
+```text
 com.manolo.jobtracker
-|
 ├── controller
-|
 ├── service
 │   └── impl
-|
 ├── repository
-|
 ├── model
-|
 ├── dto
 │   ├── request
 │   └── response
-|
 ├── mapper
-|
 ├── exception
-|
 ├── enums
-|
 └── config
+```
 
 📈 Obiettivi del progetto
 
@@ -147,5 +140,4 @@ JobTrackerApplication.java
 
 Manolo Sainas
 
-GitHub: https://github.com/ManoloSainas
-LinkedIn: https://www.linkedin.com/in/manolosainas/
+GitHub: https://github.com/ManoloSainas / LinkedIn: https://www.linkedin.com/in/manolosainas/
