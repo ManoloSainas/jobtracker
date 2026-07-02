@@ -1,6 +1,6 @@
 package com.manolo.jobtracker.model;
 
-import com.manolo.jobtracker.model.enums.Status;
+import com.manolo.jobtracker.enums.Status;
 import jakarta.persistence.*;
 import lombok.*;
 

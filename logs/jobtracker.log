@@ -1,0 +1,46 @@
+2026-07-02T16:06:43.308+02:00  INFO 7156 --- [jobtracker] [main] c.m.jobtracker.JobtrackerApplication     : Starting JobtrackerApplication using Java 25 with PID 7156 (C:\Users\saina\OneDrive\Documenti\IntelliJ Projects\jobtracker\target\classes started by saina in C:\Users\saina\OneDrive\Documenti\IntelliJ Projects\jobtracker)
+2026-07-02T16:06:43.310+02:00  INFO 7156 --- [jobtracker] [main] c.m.jobtracker.JobtrackerApplication     : No active profile set, falling back to 1 default profile: "default"
+2026-07-02T16:06:43.781+02:00  INFO 7156 --- [jobtracker] [main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data JPA repositories in DEFAULT mode.
+2026-07-02T16:06:43.820+02:00  INFO 7156 --- [jobtracker] [main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 31 ms. Found 3 JPA repository interfaces.
+2026-07-02T16:06:44.411+02:00  INFO 7156 --- [jobtracker] [main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8080 (http)
+2026-07-02T16:06:44.424+02:00  INFO 7156 --- [jobtracker] [main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-07-02T16:06:44.425+02:00  INFO 7156 --- [jobtracker] [main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.18]
+2026-07-02T16:06:44.468+02:00  INFO 7156 --- [jobtracker] [main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 1107 ms
+2026-07-02T16:06:44.616+02:00  INFO 7156 --- [jobtracker] [main] org.hibernate.orm.jpa                    : HHH008540: Processing PersistenceUnitInfo [name: default]
+2026-07-02T16:06:44.671+02:00  INFO 7156 --- [jobtracker] [main] org.hibernate.orm.core                   : HHH000001: Hibernate ORM core version 7.2.7.Final
+2026-07-02T16:06:45.030+02:00  INFO 7156 --- [jobtracker] [main] o.s.o.j.p.SpringPersistenceUnitInfo      : No LoadTimeWeaver setup: ignoring JPA class transformer
+2026-07-02T16:06:45.056+02:00  INFO 7156 --- [jobtracker] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Starting...
+2026-07-02T16:06:45.205+02:00  INFO 7156 --- [jobtracker] [main] com.zaxxer.hikari.pool.HikariPool        : HikariPool-1 - Added connection com.mysql.cj.jdbc.ConnectionImpl@3d02ff64
+2026-07-02T16:06:45.206+02:00  INFO 7156 --- [jobtracker] [main] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Start completed.
+2026-07-02T16:06:45.327+02:00  INFO 7156 --- [jobtracker] [main] org.hibernate.orm.connections.pooling    : HHH10001005: Database info:
+	Database JDBC URL [jdbc:mysql://localhost:3306/jobtrackerDB?useSSL=false&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=UTC]
+	Database driver: MySQL Connector/J
+	Database dialect: MySQLDialect
+	Database version: 8.0.45
+	Default catalog/schema: jobtrackerDB/undefined
+	Autocommit mode: undefined/unknown
+	Isolation level: REPEATABLE_READ [default REPEATABLE_READ]
+	JDBC fetch size: none
+	Pool: DataSourceConnectionProvider
+	Minimum pool size: undefined/unknown
+	Maximum pool size: undefined/unknown
+2026-07-02T16:06:46.080+02:00  INFO 7156 --- [jobtracker] [main] org.hibernate.orm.core                   : HHH000489: No JTA platform available (set 'hibernate.transaction.jta.platform' to enable JTA platform integration)
+2026-07-02T16:06:46.842+02:00  INFO 7156 --- [jobtracker] [main] j.LocalContainerEntityManagerFactoryBean : Initialized JPA EntityManagerFactory for persistence unit 'default'
+2026-07-02T16:06:46.914+02:00  INFO 7156 --- [jobtracker] [main] o.s.d.j.r.query.QueryEnhancerFactories   : Hibernate is in classpath; If applicable, HQL parser will be used.
+2026-07-02T16:06:47.528+02:00  INFO 7156 --- [jobtracker] [main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8080 (http) with context path '/'
+2026-07-02T16:06:47.533+02:00  INFO 7156 --- [jobtracker] [main] c.m.jobtracker.JobtrackerApplication     : Started JobtrackerApplication in 4.654 seconds (process running for 5.187)
+2026-07-02T16:06:47.536+02:00  WARN 7156 --- [jobtracker] [main] o.s.core.events.SpringDocAppInitializer  : SpringDoc /v3/api-docs endpoint is enabled by default. To disable it in production, set the property 'springdoc.api-docs.enabled=false'
+2026-07-02T16:06:47.536+02:00  WARN 7156 --- [jobtracker] [main] o.s.core.events.SpringDocAppInitializer  : SpringDoc /swagger-ui.html endpoint is enabled by default. To disable it in production, set the property 'springdoc.swagger-ui.enabled=false'
+2026-07-02T16:07:22.264+02:00  INFO 7156 --- [jobtracker] [http-nio-8080-exec-2] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-07-02T16:07:22.264+02:00  INFO 7156 --- [jobtracker] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-07-02T16:07:22.266+02:00  INFO 7156 --- [jobtracker] [http-nio-8080-exec-2] o.s.web.servlet.DispatcherServlet        : Completed initialization in 2 ms
+2026-07-02T16:07:22.492+02:00 DEBUG 7156 --- [jobtracker] [http-nio-8080-exec-2] c.m.j.service.impl.UserServiceImpl       : Creazione User avviata: email=test@test.com
+2026-07-02T16:07:23.022+02:00  INFO 7156 --- [jobtracker] [http-nio-8080-exec-2] c.m.j.service.impl.UserServiceImpl       : User creato con successo: id=1, email=test@test.com
+2026-07-02T16:08:09.958+02:00 DEBUG 7156 --- [jobtracker] [http-nio-8080-exec-3] c.m.j.service.impl.UserServiceImpl       : Creazione User avviata: email=test@test.com
+2026-07-02T16:08:09.965+02:00  WARN 7156 --- [jobtracker] [http-nio-8080-exec-3] c.m.j.service.impl.UserServiceImpl       : Tentativo di registrazione User con email già esistente: email=test@test.com
+2026-07-02T16:08:09.974+02:00  WARN 7156 --- [jobtracker] [http-nio-8080-exec-3] c.m.j.exception.GlobalExceptionHandler   : ConflictException: message=Email già registrata: test@test.com, path=/api/users
+2026-07-02T16:13:41.472+02:00  INFO 7156 --- [jobtracker] [SpringApplicationShutdownHook] o.s.boot.tomcat.GracefulShutdown         : Commencing graceful shutdown. Waiting for active requests to complete
+2026-07-02T16:13:41.476+02:00  INFO 7156 --- [jobtracker] [tomcat-shutdown] o.s.boot.tomcat.GracefulShutdown         : Graceful shutdown complete
+2026-07-02T16:13:41.479+02:00  INFO 7156 --- [jobtracker] [SpringApplicationShutdownHook] j.LocalContainerEntityManagerFactoryBean : Closing JPA EntityManagerFactory for persistence unit 'default'
+2026-07-02T16:13:41.480+02:00  INFO 7156 --- [jobtracker] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown initiated...
+2026-07-02T16:13:41.487+02:00  INFO 7156 --- [jobtracker] [SpringApplicationShutdownHook] com.zaxxer.hikari.HikariDataSource       : HikariPool-1 - Shutdown completed.

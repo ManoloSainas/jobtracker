@@ -1,6 +1,6 @@
 package com.manolo.jobtracker.dto.request;
 
-import com.manolo.jobtracker.model.enums.Role;
+import com.manolo.jobtracker.enums.Role;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

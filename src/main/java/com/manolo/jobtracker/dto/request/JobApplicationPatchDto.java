@@ -1,6 +1,6 @@
 package com.manolo.jobtracker.dto.request;
 
-import com.manolo.jobtracker.model.enums.Status;
+import com.manolo.jobtracker.enums.Status;
 import jakarta.validation.constraints.NotNull;
 import lombok.Getter;
 import lombok.Setter;

@@ -1,6 +1,6 @@
 package com.manolo.jobtracker.exception;
 
-import com.manolo.jobtracker.model.enums.ErrorCode;
+import com.manolo.jobtracker.enums.ErrorCode;
 
 import java.time.LocalDateTime;
 import java.util.List;

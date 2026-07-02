@@ -1,6 +1,6 @@
 package com.manolo.jobtracker.dto.response;
 
-import com.manolo.jobtracker.model.enums.Status;
+import com.manolo.jobtracker.enums.Status;
 import lombok.*;
 
 import java.time.LocalDate;

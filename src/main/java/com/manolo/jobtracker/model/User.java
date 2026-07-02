@@ -1,6 +1,6 @@
 package com.manolo.jobtracker.model;
 
-import com.manolo.jobtracker.model.enums.Role;
+import com.manolo.jobtracker.enums.Role;
 import jakarta.persistence.*;
 import lombok.*;
 

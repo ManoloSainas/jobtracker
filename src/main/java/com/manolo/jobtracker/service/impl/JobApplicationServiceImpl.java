@@ -11,11 +11,12 @@ import com.manolo.jobtracker.exception.UserNotFoundException;
 import com.manolo.jobtracker.model.JobApplication;
 import com.manolo.jobtracker.model.Tag;
 import com.manolo.jobtracker.model.User;
-import com.manolo.jobtracker.model.enums.ErrorCode;
+import com.manolo.jobtracker.enums.ErrorCode;
 import com.manolo.jobtracker.repository.JobApplicationRepository;
 import com.manolo.jobtracker.repository.TagRepository;
 import com.manolo.jobtracker.repository.UserRepository;
 import com.manolo.jobtracker.service.JobApplicationService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +24,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+@Slf4j
 @Service
 @Transactional
 public class JobApplicationServiceImpl implements JobApplicationService {
@@ -44,11 +46,15 @@ public class JobApplicationServiceImpl implements JobApplicationService {
     @Override
     public JobApplicationResponseDto createApplication(JobApplicationRequestDto dto) {
 
+        log.debug("Creazione candidatura avviata: userId={}, company={}, position={}",
+                dto.getUserId(), dto.getCompany(), dto.getPosition());
+
         if (jobApplicationRepository.existsByUserIdAndCompanyAndPosition(
                 dto.getUserId(),
                 dto.getCompany(),
                 dto.getPosition()
         )) {
+
             throw new ConflictException(
                     "Hai già inviato una candidatura per questa posizione",
                     ErrorCode.APPLICATION_ALREADY_EXISTS
@@ -72,12 +78,20 @@ public class JobApplicationServiceImpl implements JobApplicationService {
 
         application = jobApplicationRepository.save(application);
 
+        log.info("Candidatura creata con successo: id={}, userId={}, company={}, position={}",
+                application.getId(),
+                user.getId(),
+                application.getCompany(),
+                application.getPosition());
+
         return JobApplicationMapper.toResponse(application);
     }
 
     @Override
     @Transactional(readOnly = true)
     public JobApplicationResponseDto getById(Long id) {
+
+        log.debug("Richiesta getById JobApplication id={}", id);
 
         JobApplication application = jobApplicationRepository.findById(id)
                 .orElseThrow(() -> new ApplicationNotFoundException(
@@ -90,6 +104,9 @@ public class JobApplicationServiceImpl implements JobApplicationService {
     @Override
     @Transactional(readOnly = true)
     public List<JobApplicationResponseDto> getAll() {
+
+        log.debug("Richiesta lista completa JobApplication");
+
         return jobApplicationRepository.findAll()
                 .stream()
                 .map(JobApplicationMapper::toResponse)
@@ -99,6 +116,8 @@ public class JobApplicationServiceImpl implements JobApplicationService {
     @Override
     @Transactional(readOnly = true)
     public List<JobApplicationResponseDto> getByUserId(Long userId) {
+
+        log.debug("Richiesta candidature per userId={}", userId);
 
         userRepository.findById(userId)
                 .orElseThrow(() -> new UserNotFoundException(
@@ -114,6 +133,9 @@ public class JobApplicationServiceImpl implements JobApplicationService {
     @Override
     public JobApplicationResponseDto patch(Long id, JobApplicationPatchDto dto) {
 
+        log.debug("Patch JobApplication avviato: id={}, status={}, tagsIds={}",
+                id, dto.getStatus(), dto.getTagsIds());
+
         JobApplication application = jobApplicationRepository.findById(id)
                 .orElseThrow(() -> new ApplicationNotFoundException(
                         "JobApplication non trovata con id: " + id
@@ -127,19 +149,26 @@ public class JobApplicationServiceImpl implements JobApplicationService {
             application.setTags(validateAndGetTags(dto.getTagsIds()));
         }
 
-        return JobApplicationMapper.toResponse(jobApplicationRepository.save(application));
+        application = jobApplicationRepository.save(application);
+
+        log.info("JobApplication aggiornata con successo: id={}", id);
+
+        return JobApplicationMapper.toResponse(application);
     }
 
     @Override
     public void delete(Long id) {
+
+        log.debug("Richiesta eliminazione JobApplication id={}", id);
 
         JobApplication application = jobApplicationRepository.findById(id)
                 .orElseThrow(() -> new ApplicationNotFoundException(
                         "JobApplication non trovata con id: " + id
                 ));
 
-
         jobApplicationRepository.delete(application);
+
+        log.info("JobApplication eliminata con successo: id={}", id);
     }
 
     private Set<Tag> validateAndGetTags(List<Long> tagsIds) {

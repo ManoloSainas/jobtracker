@@ -1,4 +1,4 @@
-package com.manolo.jobtracker.model.enums;
+package com.manolo.jobtracker.enums;
 
 public enum Status {
     APPLIED,

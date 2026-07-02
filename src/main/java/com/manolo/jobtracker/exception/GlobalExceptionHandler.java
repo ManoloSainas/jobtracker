@@ -1,7 +1,8 @@
 package com.manolo.jobtracker.exception;
 
-import com.manolo.jobtracker.model.enums.ErrorCode;
+import com.manolo.jobtracker.enums.ErrorCode;
 import jakarta.servlet.http.HttpServletRequest;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
@@ -21,6 +23,9 @@ public class GlobalExceptionHandler {
             UserNotFoundException ex,
             HttpServletRequest request
     ) {
+        log.warn("UserNotFoundException: message={}, path={}",
+                ex.getMessage(), request.getRequestURI());
+
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                 new ApiErrorResponse(
                         LocalDateTime.now(),
@@ -39,6 +44,9 @@ public class GlobalExceptionHandler {
             TagNotFoundException ex,
             HttpServletRequest request
     ) {
+        log.warn("TagNotFoundException: message={}, path={}",
+                ex.getMessage(), request.getRequestURI());
+
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                 new ApiErrorResponse(
                         LocalDateTime.now(),
@@ -57,6 +65,9 @@ public class GlobalExceptionHandler {
             ApplicationNotFoundException ex,
             HttpServletRequest request
     ) {
+        log.warn("ApplicationNotFoundException: message={}, path={}",
+                ex.getMessage(), request.getRequestURI());
+
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
                 new ApiErrorResponse(
                         LocalDateTime.now(),
@@ -75,6 +86,9 @@ public class GlobalExceptionHandler {
             BadRequestException ex,
             HttpServletRequest request
     ) {
+        log.warn("BadRequestException: message={}, path={}",
+                ex.getMessage(), request.getRequestURI());
+
         return ResponseEntity.badRequest().body(
                 new ApiErrorResponse(
                         LocalDateTime.now(),
@@ -93,6 +107,9 @@ public class GlobalExceptionHandler {
             ConflictException ex,
             HttpServletRequest request
     ) {
+        log.warn("ConflictException: message={}, path={}",
+                ex.getMessage(), request.getRequestURI());
+
         return ResponseEntity.status(HttpStatus.CONFLICT).body(
                 new ApiErrorResponse(
                         LocalDateTime.now(),
@@ -111,6 +128,8 @@ public class GlobalExceptionHandler {
             MethodArgumentNotValidException ex,
             HttpServletRequest request
     ) {
+
+        log.warn("Validation error on path={}", request.getRequestURI());
 
         List<ApiValidationError> errors = ex.getBindingResult()
                 .getFieldErrors()
@@ -133,12 +152,15 @@ public class GlobalExceptionHandler {
         );
     }
 
-    // JSON NON LEGGIBILE (es. valore sbagliato per un enum, JSON rotto, tipo sbagliato)
+    // JSON NOT OK
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ApiErrorResponse> handleNotReadable(
             HttpMessageNotReadableException ex,
             HttpServletRequest request
     ) {
+
+        log.warn("Malformed JSON request on path={}", request.getRequestURI());
+
         return ResponseEntity.badRequest().body(
                 new ApiErrorResponse(
                         LocalDateTime.now(),
@@ -151,12 +173,15 @@ public class GlobalExceptionHandler {
         );
     }
 
-    // GENERIC
+    // GENERIC (CRITICAL)
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ApiErrorResponse> handleGeneric(
             Exception ex,
             HttpServletRequest request
     ) {
+
+        log.error("Unexpected server error on path={}", request.getRequestURI(), ex);
+
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
                 new ApiErrorResponse(
                         LocalDateTime.now(),

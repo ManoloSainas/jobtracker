@@ -1,6 +1,6 @@
 package com.manolo.jobtracker.exception;
 
-import com.manolo.jobtracker.model.enums.ErrorCode;
+import com.manolo.jobtracker.enums.ErrorCode;
 
 public class ConflictException extends RuntimeException {
 
