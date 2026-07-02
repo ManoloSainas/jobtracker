@@ -76,33 +76,42 @@ La gestione degli errori è centralizzata tramite @RestControllerAdvice.
 
 Errori gestiti
 - 404 Not Found
- -- User non trovato
- -- Tag non trovato
- -- Job Application non trovata
+ -> User non trovato
+ / Tag non trovato
+ / Job Application non trovata
 - 409 Conflict
- -- Email duplicata
- -- Tag duplicato
- -- Candidatura duplicata (stesso user/company/position)
+ -> Email duplicata
+ / Tag duplicato
+ / Candidatura duplicata (stesso user/company/position)
 - 400 Bad Request
- -- Validazione input (Bean Validation)
- -- JSON malformato o request non leggibile
+ -> Validazione input (Bean Validation)
+ / JSON malformato o request non leggibile
 - 500 Internal Server Error
- -- Errori inattesi del server
+ -> Errori inattesi del server
 
 📦 Struttura del progetto
 
 com.manolo.jobtracker
+|
 ├── controller
+|
 ├── service
 │   └── impl
+|
 ├── repository
+|
 ├── model
+|
 ├── dto
 │   ├── request
 │   └── response
+|
 ├── mapper
+|
 ├── exception
+|
 ├── enums
+|
 └── config
 
 📈 Obiettivi del progetto
@@ -112,20 +121,22 @@ com.manolo.jobtracker
 - Implementare logging e osservabilità
 - Gestire errori in modo centralizzato e scalabile
 - Costruire una base solida per progetti full-stack futuri
-- 
+
 🧪 Avvio del progetto
+
 - Prerequisiti
- -- Java 21+
--- MySQL
- -- Maven
+ -> Java 21+
+ / MySQL
+ / Maven
 - Avvio
- -- mvn clean install
- -- mvn spring-boot:run
+ -> mvn clean install
+ / mvn spring-boot:run
 
 Oppure eseguire direttamente da IntelliJ tramite:
 JobTrackerApplication.java
 
 📌 Note tecniche
+
 - Le entità non vengono mai esposte direttamente nelle API
 - Tutte le risposte sono basate su DTO
 - Le validazioni sono gestite con Bean Validation
