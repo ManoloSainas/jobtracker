@@ -19,7 +19,7 @@ public class GlobalExceptionHandler {
 
     // USER NOT FOUND
     @ExceptionHandler(UserNotFoundException.class)
-    public ResponseEntity<ApiErrorResponse> handleUserNotFound(
+    public ResponseEntity<ApiErrorResponseDTO> handleUserNotFound(
             UserNotFoundException ex,
             HttpServletRequest request
     ) {
@@ -27,7 +27,7 @@ public class GlobalExceptionHandler {
                 ex.getMessage(), request.getRequestURI());
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                new ApiErrorResponse(
+                new ApiErrorResponseDTO(
                         LocalDateTime.now(),
                         404,
                         ErrorCode.USER_NOT_FOUND,
@@ -40,7 +40,7 @@ public class GlobalExceptionHandler {
 
     // TAG NOT FOUND
     @ExceptionHandler(TagNotFoundException.class)
-    public ResponseEntity<ApiErrorResponse> handleTagNotFound(
+    public ResponseEntity<ApiErrorResponseDTO> handleTagNotFound(
             TagNotFoundException ex,
             HttpServletRequest request
     ) {
@@ -48,7 +48,7 @@ public class GlobalExceptionHandler {
                 ex.getMessage(), request.getRequestURI());
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                new ApiErrorResponse(
+                new ApiErrorResponseDTO(
                         LocalDateTime.now(),
                         404,
                         ErrorCode.TAG_NOT_FOUND,
@@ -61,7 +61,7 @@ public class GlobalExceptionHandler {
 
     // APPLICATION NOT FOUND
     @ExceptionHandler(ApplicationNotFoundException.class)
-    public ResponseEntity<ApiErrorResponse> handleApplicationNotFound(
+    public ResponseEntity<ApiErrorResponseDTO> handleApplicationNotFound(
             ApplicationNotFoundException ex,
             HttpServletRequest request
     ) {
@@ -69,7 +69,7 @@ public class GlobalExceptionHandler {
                 ex.getMessage(), request.getRequestURI());
 
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(
-                new ApiErrorResponse(
+                new ApiErrorResponseDTO(
                         LocalDateTime.now(),
                         404,
                         ErrorCode.APPLICATION_NOT_FOUND,
@@ -82,7 +82,7 @@ public class GlobalExceptionHandler {
 
     // BAD REQUEST
     @ExceptionHandler(BadRequestException.class)
-    public ResponseEntity<ApiErrorResponse> handleBadRequest(
+    public ResponseEntity<ApiErrorResponseDTO> handleBadRequest(
             BadRequestException ex,
             HttpServletRequest request
     ) {
@@ -90,7 +90,7 @@ public class GlobalExceptionHandler {
                 ex.getMessage(), request.getRequestURI());
 
         return ResponseEntity.badRequest().body(
-                new ApiErrorResponse(
+                new ApiErrorResponseDTO(
                         LocalDateTime.now(),
                         400,
                         ex.getErrorCode(),
@@ -103,7 +103,7 @@ public class GlobalExceptionHandler {
 
     // CONFLICT
     @ExceptionHandler(ConflictException.class)
-    public ResponseEntity<ApiErrorResponse> handleConflict(
+    public ResponseEntity<ApiErrorResponseDTO> handleConflict(
             ConflictException ex,
             HttpServletRequest request
     ) {
@@ -111,7 +111,7 @@ public class GlobalExceptionHandler {
                 ex.getMessage(), request.getRequestURI());
 
         return ResponseEntity.status(HttpStatus.CONFLICT).body(
-                new ApiErrorResponse(
+                new ApiErrorResponseDTO(
                         LocalDateTime.now(),
                         409,
                         ex.getErrorCode(),
@@ -124,7 +124,7 @@ public class GlobalExceptionHandler {
 
     // VALIDATION
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ApiErrorResponse> handleValidation(
+    public ResponseEntity<ApiErrorResponseDTO> handleValidation(
             MethodArgumentNotValidException ex,
             HttpServletRequest request
     ) {
@@ -141,7 +141,7 @@ public class GlobalExceptionHandler {
                 .toList();
 
         return ResponseEntity.badRequest().body(
-                new ApiErrorResponse(
+                new ApiErrorResponseDTO(
                         LocalDateTime.now(),
                         400,
                         ErrorCode.VALIDATION_ERROR,
@@ -154,7 +154,7 @@ public class GlobalExceptionHandler {
 
     // JSON NOT OK
     @ExceptionHandler(HttpMessageNotReadableException.class)
-    public ResponseEntity<ApiErrorResponse> handleNotReadable(
+    public ResponseEntity<ApiErrorResponseDTO> handleNotReadable(
             HttpMessageNotReadableException ex,
             HttpServletRequest request
     ) {
@@ -162,7 +162,7 @@ public class GlobalExceptionHandler {
         log.warn("Malformed JSON request on path={}", request.getRequestURI());
 
         return ResponseEntity.badRequest().body(
-                new ApiErrorResponse(
+                new ApiErrorResponseDTO(
                         LocalDateTime.now(),
                         400,
                         ErrorCode.VALIDATION_ERROR,
@@ -175,7 +175,7 @@ public class GlobalExceptionHandler {
 
     // GENERIC (CRITICAL)
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ApiErrorResponse> handleGeneric(
+    public ResponseEntity<ApiErrorResponseDTO> handleGeneric(
             Exception ex,
             HttpServletRequest request
     ) {
@@ -183,7 +183,7 @@ public class GlobalExceptionHandler {
         log.error("Unexpected server error on path={}", request.getRequestURI(), ex);
 
         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(
-                new ApiErrorResponse(
+                new ApiErrorResponseDTO(
                         LocalDateTime.now(),
                         500,
                         ErrorCode.INTERNAL_ERROR,
