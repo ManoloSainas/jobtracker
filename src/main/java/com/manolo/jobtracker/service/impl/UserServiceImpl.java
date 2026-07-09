@@ -10,6 +10,7 @@ import com.manolo.jobtracker.enums.ErrorCode;
 import com.manolo.jobtracker.repository.UserRepository;
 import com.manolo.jobtracker.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,9 +22,11 @@ import java.util.List;
 public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImpl(UserRepository userRepository) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
@@ -40,6 +43,7 @@ public class UserServiceImpl implements UserService {
         }
 
         User user = UserMapper.toEntity(dto);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         user = userRepository.save(user);
 
         log.info("User creato con successo: id={}, email={}", user.getId(), user.getEmail());

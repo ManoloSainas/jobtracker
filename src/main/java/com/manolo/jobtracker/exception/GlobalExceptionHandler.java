@@ -6,6 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -167,6 +168,27 @@ public class GlobalExceptionHandler {
                         400,
                         ErrorCode.VALIDATION_ERROR,
                         "Richiesta non valida: controlla che tutti i campi abbiano il formato corretto",
+                        request.getRequestURI(),
+                        List.of()
+                )
+        );
+    }
+
+    // INVALID CREDENTIALS
+    @ExceptionHandler(BadCredentialsException.class)
+    public ResponseEntity<ApiErrorResponseDTO> handleBadCredentials(
+            BadCredentialsException ex,
+            HttpServletRequest request
+    ) {
+
+        log.warn("Authentication failed on path={}", request.getRequestURI());
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
+                new ApiErrorResponseDTO(
+                        LocalDateTime.now(),
+                        401,
+                        ErrorCode.INVALID_CREDENTIALS,
+                        "Credenziali non valide",
                         request.getRequestURI(),
                         List.of()
                 )
