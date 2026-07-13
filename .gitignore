@@ -1,4 +1,8 @@
-src/main/resources/application-local.properties
+# Environment files
+.env
+
+# Logs
+logs/
 
 HELP.md
 target/
