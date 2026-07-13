@@ -7,12 +7,17 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.authorization.AuthorizationDeniedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import org.springframework.security.authorization.AuthorizationDeniedException;
+
 import java.time.LocalDateTime;
 import java.util.List;
+
+import static com.manolo.jobtracker.enums.ErrorCode.FORBIDDEN;
 
 @Slf4j
 @RestControllerAdvice
@@ -193,6 +198,25 @@ public class GlobalExceptionHandler {
                         List.of()
                 )
         );
+    }
+
+    @ExceptionHandler(AuthorizationDeniedException.class)
+    public ResponseEntity<ApiErrorResponseDTO> handleAccessDenied(
+            AuthorizationDeniedException ex,
+            HttpServletRequest request
+    ) {
+
+        ApiErrorResponseDTO response = new ApiErrorResponseDTO(
+                LocalDateTime.now(),
+                403,
+                FORBIDDEN,
+                "Access denied",
+                request.getRequestURI(),
+                null
+        );
+
+        return ResponseEntity.status(HttpStatus.FORBIDDEN)
+                .body(response);
     }
 
     // GENERIC (CRITICAL)

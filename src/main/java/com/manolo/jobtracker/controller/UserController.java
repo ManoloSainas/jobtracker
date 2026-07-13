@@ -1,6 +1,7 @@
 package com.manolo.jobtracker.controller;
 
 import com.manolo.jobtracker.dto.request.UserRequestDto;
+import com.manolo.jobtracker.dto.request.UserRoleUpdateDto;
 import com.manolo.jobtracker.dto.response.UserResponseDto;
 import com.manolo.jobtracker.exception.ApiErrorResponseDTO;
 import com.manolo.jobtracker.service.UserService;
@@ -11,10 +12,12 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/api/users")
@@ -44,20 +47,12 @@ public class UserController {
             @ApiResponse(
                     responseCode = "400",
                     description = "Dati della richiesta non validi",
-                    content = @Content(
-                            schema = @Schema(
-                                    implementation = ApiErrorResponseDTO.class
-                            )
-                    )
+                    content = @Content(schema = @Schema(implementation = ApiErrorResponseDTO.class))
             ),
             @ApiResponse(
                     responseCode = "409",
                     description = "Email già esistente",
-                    content = @Content(
-                            schema = @Schema(
-                                    implementation = ApiErrorResponseDTO.class
-                            )
-                    )
+                    content = @Content(schema = @Schema(implementation = ApiErrorResponseDTO.class))
             )
     })
     public UserResponseDto create(@Valid @RequestBody UserRequestDto dto) {
@@ -66,6 +61,7 @@ public class UserController {
 
 
     @GetMapping
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(
             summary = "Recupera tutti gli utenti",
             description = "Restituisce la lista di tutti gli utenti presenti nel sistema."
@@ -74,8 +70,10 @@ public class UserController {
             responseCode = "200",
             description = "Lista utenti recuperata correttamente"
     )
-    public List<UserResponseDto> getAll() {
-        return service.getAllUsers();
+    public Page<UserResponseDto> getAll(
+            @PageableDefault(size = 20, sort = "id") Pageable pageable
+    ) {
+        return service.getAllUsers(pageable);
     }
 
 
@@ -92,11 +90,7 @@ public class UserController {
             @ApiResponse(
                     responseCode = "404",
                     description = "Utente non trovato",
-                    content = @Content(
-                            schema = @Schema(
-                                    implementation = ApiErrorResponseDTO.class
-                            )
-                    )
+                    content = @Content(schema = @Schema(implementation = ApiErrorResponseDTO.class))
             )
     })
     public UserResponseDto getById(@PathVariable Long id) {
@@ -105,6 +99,7 @@ public class UserController {
 
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(
             summary = "Elimina un utente",
             description = "Elimina un utente dal sistema tramite il suo ID."
@@ -117,14 +112,39 @@ public class UserController {
             @ApiResponse(
                     responseCode = "404",
                     description = "Utente non trovato",
-                    content = @Content(
-                            schema = @Schema(
-                                    implementation = ApiErrorResponseDTO.class
-                            )
-                    )
+                    content = @Content(schema = @Schema(implementation = ApiErrorResponseDTO.class))
             )
     })
     public void delete(@PathVariable Long id) {
         service.deleteUser(id);
+    }
+
+
+    @PatchMapping("/{id}/role")
+    @PreAuthorize("hasRole('ADMIN')")
+    @Operation(
+            summary = "Aggiorna il ruolo di un utente",
+            description = "Promuove o retrocede un utente assegnandogli un nuovo ruolo. Operazione riservata agli ADMIN."
+    )
+    @ApiResponses({
+            @ApiResponse(
+                    responseCode = "200",
+                    description = "Ruolo aggiornato correttamente"
+            ),
+            @ApiResponse(
+                    responseCode = "403",
+                    description = "Accesso negato: richiesto ruolo ADMIN"
+            ),
+            @ApiResponse(
+                    responseCode = "404",
+                    description = "Utente non trovato",
+                    content = @Content(schema = @Schema(implementation = ApiErrorResponseDTO.class))
+            )
+    })
+    public UserResponseDto updateRole(
+            @PathVariable Long id,
+            @Valid @RequestBody UserRoleUpdateDto dto
+    ) {
+        return service.updateRole(id, dto);
     }
 }

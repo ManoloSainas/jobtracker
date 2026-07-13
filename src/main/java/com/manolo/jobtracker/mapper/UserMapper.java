@@ -2,6 +2,7 @@ package com.manolo.jobtracker.mapper;
 
 import com.manolo.jobtracker.dto.request.UserRequestDto;
 import com.manolo.jobtracker.dto.response.UserResponseDto;
+import com.manolo.jobtracker.enums.Role;
 import com.manolo.jobtracker.model.User;
 
 public class UserMapper {
@@ -12,7 +13,7 @@ public class UserMapper {
 
         user.setEmail(dto.getEmail());
         user.setPassword(dto.getPassword());
-        user.setRole(dto.getRole());
+        user.setRole(Role.USER);
 
         return user;
     }

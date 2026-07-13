@@ -35,7 +35,4 @@ public class UserRequestDto {
     @NotBlank(message = "Password obbligatoria")
     @Size(min = 3, max = 100, message = "Password tra 3 e 100 caratteri")
     private String password;
-
-    @NotNull(message = "Role obbligatorio")
-    private Role role;
 }

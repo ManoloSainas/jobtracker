@@ -1,9 +1,10 @@
 package com.manolo.jobtracker.service;
 
 import com.manolo.jobtracker.dto.request.UserRequestDto;
+import com.manolo.jobtracker.dto.request.UserRoleUpdateDto;
 import com.manolo.jobtracker.dto.response.UserResponseDto;
-
-import java.util.List;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 public interface UserService {
 
@@ -11,7 +12,9 @@ public interface UserService {
 
     UserResponseDto getUserById(Long id);
 
-    List<UserResponseDto> getAllUsers();
+    Page<UserResponseDto> getAllUsers(Pageable pageable);
 
     void deleteUser(Long id);
+
+    UserResponseDto updateRole(Long id, UserRoleUpdateDto dto);
 }

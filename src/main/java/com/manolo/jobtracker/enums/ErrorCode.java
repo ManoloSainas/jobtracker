@@ -24,5 +24,6 @@ public enum ErrorCode {
     INVALID_TAG_LIST,
 
     // SECURITY
-    INVALID_CREDENTIALS
+    INVALID_CREDENTIALS,
+    FORBIDDEN
 }

@@ -1,6 +1,7 @@
 package com.manolo.jobtracker.service.impl;
 
 import com.manolo.jobtracker.dto.request.UserRequestDto;
+import com.manolo.jobtracker.dto.request.UserRoleUpdateDto;
 import com.manolo.jobtracker.dto.response.UserResponseDto;
 import com.manolo.jobtracker.mapper.UserMapper;
 import com.manolo.jobtracker.exception.ConflictException;
@@ -10,11 +11,12 @@ import com.manolo.jobtracker.enums.ErrorCode;
 import com.manolo.jobtracker.repository.UserRepository;
 import com.manolo.jobtracker.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
 
 @Slf4j
 @Service
@@ -67,14 +69,13 @@ public class UserServiceImpl implements UserService {
 
     @Override
     @Transactional(readOnly = true)
-    public List<UserResponseDto> getAllUsers() {
+    public Page<UserResponseDto> getAllUsers(Pageable pageable) {
 
-        log.debug("Richiesta lista completa User");
+        log.debug("Richiesta lista paginata User: page={}, size={}",
+                pageable.getPageNumber(), pageable.getPageSize());
 
-        return userRepository.findAll()
-                .stream()
-                .map(UserMapper::toResponse)
-                .toList();
+        return userRepository.findAll(pageable)
+                .map(UserMapper::toResponse);
     }
 
     @Override
@@ -90,5 +91,23 @@ public class UserServiceImpl implements UserService {
         userRepository.delete(user);
 
         log.info("User eliminato con successo: id={}", id);
+    }
+
+    @Override
+    public UserResponseDto updateRole(Long id, UserRoleUpdateDto dto) {
+
+        log.debug("Aggiornamento ruolo User id={} a role={}", id, dto.getRole());
+
+        User user = userRepository.findById(id)
+                .orElseThrow(() -> new UserNotFoundException(
+                        "User non trovato con id: " + id
+                ));
+
+        user.setRole(dto.getRole());
+        user = userRepository.save(user);
+
+        log.info("Ruolo aggiornato con successo: id={}, nuovoRole={}", user.getId(), user.getRole());
+
+        return UserMapper.toResponse(user);
     }
 }
