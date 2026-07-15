@@ -10,10 +10,10 @@ import com.manolo.jobtracker.enums.ErrorCode;
 import com.manolo.jobtracker.repository.TagRepository;
 import com.manolo.jobtracker.service.TagService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 @Slf4j
 @Service
@@ -29,47 +29,50 @@ public class TagServiceImpl implements TagService {
     @Override
     public TagResponseDto createTag(TagRequestDto dto) {
 
-        log.debug("Creazione Tag avviata: name={}", dto.getName());
+        String normalizedName = dto.getName()
+                .trim()
+                .toLowerCase(java.util.Locale.ROOT);
 
-        if (tagRepository.findByName(dto.getName()).isPresent()) {
+
+        log.debug("Creazione Tag avviata: name={}", normalizedName);
+
+
+        if (tagRepository.findByName(normalizedName).isPresent()) {
 
             throw new ConflictException(
-                    "Tag già esistente: " + dto.getName(),
+                    "Tag già esistente: " + normalizedName,
                     ErrorCode.TAG_ALREADY_EXISTS
             );
         }
 
+
         Tag tag = TagMapper.toEntity(dto);
+        tag.setName(normalizedName);
+
         tag = tagRepository.save(tag);
 
-        log.info("Tag creato con successo: id={}, name={}", tag.getId(), tag.getName());
+
+        log.info(
+                "Tag creato con successo: id={}, name={}",
+                tag.getId(),
+                tag.getName()
+        );
+
 
         return TagMapper.toResponse(tag);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<TagResponseDto> getAllTags() {
+    public Page<TagResponseDto> getAllTags(Pageable pageable) {
 
-        log.debug("Richiesta lista completa Tag");
+        log.debug(
+                "Richiesta lista paginata Tag: page={}, size={}",
+                pageable.getPageNumber(),
+                pageable.getPageSize()
+        );
 
-        return tagRepository.findAll()
-                .stream()
-                .map(TagMapper::toResponse)
-                .toList();
-    }
-
-    @Override
-    @Transactional(readOnly = true)
-    public TagResponseDto getById(Long id) {
-
-        log.debug("Richiesta Tag per id={}", id);
-
-        Tag tag = tagRepository.findById(id)
-                .orElseThrow(() -> new TagNotFoundException(
-                        "Tag non trovato con id: " + id
-                ));
-
-        return TagMapper.toResponse(tag);
+        return tagRepository.findAll(pageable)
+                .map(TagMapper::toResponse);
     }
 }

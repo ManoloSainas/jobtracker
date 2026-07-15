@@ -29,10 +29,7 @@ public class JwtService {
                 .subject(userDetails.getUsername())
                 .claim(
                         "role",
-                        customUser.getAuthorities()
-                                .iterator()
-                                .next()
-                                .getAuthority()
+                        customUser.getUser().getRole().name()
                 )
                 .issuedAt(new Date())
                 .expiration(

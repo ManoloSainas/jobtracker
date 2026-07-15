@@ -78,6 +78,7 @@ public class UserController {
 
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.id")
     @Operation(
             summary = "Recupera un utente tramite ID",
             description = "Restituisce un singolo utente identificato dal suo ID."

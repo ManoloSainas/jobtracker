@@ -12,6 +12,9 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -86,8 +89,10 @@ public class JobApplicationController {
             responseCode = "200",
             description = "Lista candidature recuperata correttamente"
     )
-    public List<JobApplicationResponseDto> getAll() {
-        return service.getAll();
+    public Page<JobApplicationResponseDto> getAll(
+            @PageableDefault(size = 20, sort = "id") Pageable pageable
+    ) {
+        return service.getAll(pageable);
     }
 
 
@@ -116,30 +121,20 @@ public class JobApplicationController {
     }
 
 
-    @GetMapping("/user/{userId}")
+    @GetMapping("/my")
     @Operation(
-            summary = "Recupera le candidature di un utente",
-            description = "Restituisce tutte le candidature associate a uno specifico utente."
+            summary = "Recupera le candidature dell'utente autenticato",
+            description = "Restituisce tutte le candidature associate all'utente che ha effettuato il login."
     )
-    @ApiResponses({
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Candidature recuperate correttamente"
-            ),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Utente non trovato",
-                    content = @Content(
-                            schema = @Schema(
-                                    implementation = ApiErrorResponseDTO.class
-                            )
-                    )
-            )
-    })
-    public List<JobApplicationResponseDto> getByUser(
-            @PathVariable Long userId
+    @ApiResponse(
+            responseCode = "200",
+            description = "Candidature recuperate correttamente"
+    )
+    public Page<JobApplicationResponseDto> getMyApplications(
+            Pageable pageable
     ) {
-        return service.getByUserId(userId);
+
+        return service.getMyApplications(pageable);
     }
 
 

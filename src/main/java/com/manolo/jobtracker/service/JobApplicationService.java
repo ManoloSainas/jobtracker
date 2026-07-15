@@ -3,6 +3,8 @@ package com.manolo.jobtracker.service;
 import com.manolo.jobtracker.dto.request.JobApplicationPatchDto;
 import com.manolo.jobtracker.dto.request.JobApplicationRequestDto;
 import com.manolo.jobtracker.dto.response.JobApplicationResponseDto;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 
 import java.util.List;
 
@@ -12,9 +14,9 @@ public interface JobApplicationService {
 
     JobApplicationResponseDto getById(Long id);
 
-    List<JobApplicationResponseDto> getAll();
+    Page<JobApplicationResponseDto> getAll(Pageable pageable);
 
-    List<JobApplicationResponseDto> getByUserId(Long userId);
+    Page<JobApplicationResponseDto> getMyApplications(Pageable pageable);
 
     JobApplicationResponseDto patch(Long id, JobApplicationPatchDto dto);
 

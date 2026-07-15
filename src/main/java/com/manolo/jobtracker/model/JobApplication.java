@@ -29,10 +29,16 @@ public class JobApplication {
     private Long id;
 
     @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
     private Status status;
 
+    @Column(nullable = false, length = 100)
     private String company;
+
+    @Column(nullable = false, length = 100)
     private String position;
+
+    @Column(nullable = false)
     private LocalDate applicationDate;
 
     @ManyToOne(optional = false, fetch = FetchType.LAZY)

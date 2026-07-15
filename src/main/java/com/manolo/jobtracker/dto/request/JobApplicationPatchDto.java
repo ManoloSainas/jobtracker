@@ -20,7 +20,6 @@ public class JobApplicationPatchDto {
             example = "INTERVIEW",
             requiredMode = Schema.RequiredMode.REQUIRED
     )
-    @NotNull
     private Status status;
 
 

@@ -10,7 +10,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @Getter
@@ -45,22 +44,6 @@ public class JobApplicationRequestDto {
     )
     @NotBlank(message = "Position obbligatoria")
     private String position;
-
-    @Schema(
-            description = "Data di invio della candidatura",
-            example = "2026-07-08",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
-    @NotNull(message = "Data applicazione obbligatoria")
-    private LocalDate applicationDate;
-
-    @Schema(
-            description = "Identificativo dell'utente associato alla candidatura",
-            example = "1",
-            requiredMode = Schema.RequiredMode.REQUIRED
-    )
-    @NotNull(message = "UserId obbligatorio")
-    private Long userId;
 
     @Schema(
             description = "Lista degli identificativi dei tag associati alla candidatura",

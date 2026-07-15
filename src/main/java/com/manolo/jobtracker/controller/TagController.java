@@ -11,6 +11,10 @@ import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -31,6 +35,7 @@ public class TagController {
 
 
     @PostMapping
+    @PreAuthorize("hasRole('ADMIN')")
     @Operation(
             summary = "Crea un nuovo tag",
             description = "Crea un nuovo tag associato al sistema."
@@ -67,38 +72,15 @@ public class TagController {
     @GetMapping
     @Operation(
             summary = "Recupera tutti i tag",
-            description = "Restituisce la lista di tutti i tag presenti nel sistema."
+            description = "Restituisce i tag presenti nel sistema con paginazione."
     )
     @ApiResponse(
             responseCode = "200",
             description = "Lista dei tag recuperata correttamente"
     )
-    public List<TagResponseDto> getAll() {
-        return service.getAllTags();
-    }
-
-
-    @GetMapping("/{id}")
-    @Operation(
-            summary = "Recupera un tag tramite ID",
-            description = "Restituisce un singolo tag identificato dal suo ID."
-    )
-    @ApiResponses({
-            @ApiResponse(
-                    responseCode = "200",
-                    description = "Tag trovato correttamente"
-            ),
-            @ApiResponse(
-                    responseCode = "404",
-                    description = "Tag non trovato",
-                    content = @Content(
-                            schema = @Schema(
-                                    implementation = ApiErrorResponseDTO.class
-                            )
-                    )
-            )
-    })
-    public TagResponseDto getById(@PathVariable Long id) {
-        return service.getById(id);
+    public Page<TagResponseDto> getAll(
+            @PageableDefault(size = 20, sort = "id") Pageable pageable
+    ) {
+        return service.getAllTags(pageable);
     }
 }

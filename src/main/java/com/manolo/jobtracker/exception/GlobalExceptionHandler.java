@@ -3,6 +3,7 @@ package com.manolo.jobtracker.exception;
 import com.manolo.jobtracker.enums.ErrorCode;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -217,6 +218,26 @@ public class GlobalExceptionHandler {
 
         return ResponseEntity.status(HttpStatus.FORBIDDEN)
                 .body(response);
+    }
+
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ApiErrorResponseDTO> handleDataIntegrityViolation(
+            DataIntegrityViolationException ex,
+            HttpServletRequest request
+    ) {
+
+        log.warn("Violazione di un vincolo del database: path={}", request.getRequestURI());
+
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(
+                new ApiErrorResponseDTO(
+                        LocalDateTime.now(),
+                        409,
+                        ErrorCode.EMAIL_ALREADY_EXISTS,
+                        "Email già registrata",
+                        request.getRequestURI(),
+                        List.of()
+                )
+        );
     }
 
     // GENERIC (CRITICAL)

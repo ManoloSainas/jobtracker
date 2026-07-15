@@ -1,18 +1,24 @@
 package com.manolo.jobtracker.repository;
 
-import com.manolo.jobtracker.model.JobApplication;
 import com.manolo.jobtracker.enums.Status;
+import com.manolo.jobtracker.model.JobApplication;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
-
-import java.util.List;
 
 public interface JobApplicationRepository extends JpaRepository<JobApplication, Long> {
 
-    List<JobApplication> findByUserId(Long userId);
+    Page<JobApplication> findByUserId(Long userId, Pageable pageable);
 
-    List<JobApplication> findByUserIdAndStatus(Long userId, Status status);
+    Page<JobApplication> findByUserIdAndStatus(
+            Long userId,
+            Status status,
+            Pageable pageable
+    );
 
-    List<JobApplication> findByUserIdOrderByApplicationDateDesc(Long userId);
-
-    boolean existsByUserIdAndCompanyAndPosition(Long userId, String company, String position);
+    boolean existsByUserIdAndCompanyAndPosition(
+            Long userId,
+            String company,
+            String position
+    );
 }
