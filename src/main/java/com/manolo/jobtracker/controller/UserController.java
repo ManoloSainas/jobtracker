@@ -1,5 +1,6 @@
 package com.manolo.jobtracker.controller;
 
+import com.manolo.jobtracker.dto.request.ChangePasswordRequestDto;
 import com.manolo.jobtracker.dto.request.UserRequestDto;
 import com.manolo.jobtracker.dto.request.UserRoleUpdateDto;
 import com.manolo.jobtracker.dto.response.UserResponseDto;
@@ -16,6 +17,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
@@ -147,5 +149,17 @@ public class UserController {
             @Valid @RequestBody UserRoleUpdateDto dto
     ) {
         return service.updateRole(id, dto);
+    }
+
+    @PutMapping("/{id}/password")
+    @PreAuthorize("hasRole('ADMIN') or #id == authentication.principal.user.id")
+    public ResponseEntity<Void> changePassword(
+            @PathVariable Long id,
+            @Valid @RequestBody ChangePasswordRequestDto dto
+    ) {
+
+        service.changePassword(id, dto);
+
+        return ResponseEntity.noContent().build();
     }
 }

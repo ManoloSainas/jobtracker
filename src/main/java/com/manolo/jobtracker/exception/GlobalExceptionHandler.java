@@ -13,8 +13,6 @@ import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
-import org.springframework.security.authorization.AuthorizationDeniedException;
-
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -201,6 +199,28 @@ public class GlobalExceptionHandler {
         );
     }
 
+    // REFRESH TOKEN INVALID
+    @ExceptionHandler(RefreshTokenException.class)
+    public ResponseEntity<ApiErrorResponseDTO> handleRefreshTokenException(
+            RefreshTokenException ex,
+            HttpServletRequest request
+    ) {
+
+        log.warn("Invalid refresh token: path={}",
+                request.getRequestURI());
+
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(
+                new ApiErrorResponseDTO(
+                        LocalDateTime.now(),
+                        401,
+                        ErrorCode.REFRESH_TOKEN_INVALID,
+                        ex.getMessage(),
+                        request.getRequestURI(),
+                        List.of()
+                )
+        );
+    }
+
     @ExceptionHandler(AuthorizationDeniedException.class)
     public ResponseEntity<ApiErrorResponseDTO> handleAccessDenied(
             AuthorizationDeniedException ex,
@@ -238,6 +258,28 @@ public class GlobalExceptionHandler {
                         List.of()
                 )
         );
+    }
+
+    @ExceptionHandler(InvalidPasswordException.class)
+    public ResponseEntity<ApiErrorResponseDTO> handleInvalidPasswordException(
+            InvalidPasswordException ex,
+            HttpServletRequest request
+    ) {
+
+        log.warn("Cambio password fallito: {}", ex.getMessage());
+
+        ApiErrorResponseDTO error = new ApiErrorResponseDTO(
+                LocalDateTime.now(),
+                HttpStatus.BAD_REQUEST.value(),
+                ErrorCode.INVALID_PASSWORD,
+                ex.getMessage(),
+                request.getRequestURI(),
+                List.of()
+        );
+
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)
+                .body(error);
     }
 
     // GENERIC (CRITICAL)

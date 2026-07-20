@@ -25,5 +25,9 @@ public enum ErrorCode {
 
     // SECURITY
     INVALID_CREDENTIALS,
-    FORBIDDEN
+    FORBIDDEN,
+    INVALID_PASSWORD,
+
+    // TOKEN
+    REFRESH_TOKEN_INVALID
 }

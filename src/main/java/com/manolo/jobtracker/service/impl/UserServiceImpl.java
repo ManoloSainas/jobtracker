@@ -1,14 +1,18 @@
 package com.manolo.jobtracker.service.impl;
 
+import com.manolo.jobtracker.dto.request.ChangePasswordRequestDto;
 import com.manolo.jobtracker.dto.request.UserRequestDto;
 import com.manolo.jobtracker.dto.request.UserRoleUpdateDto;
 import com.manolo.jobtracker.dto.response.UserResponseDto;
+import com.manolo.jobtracker.exception.InvalidPasswordException;
 import com.manolo.jobtracker.mapper.UserMapper;
 import com.manolo.jobtracker.exception.ConflictException;
 import com.manolo.jobtracker.exception.UserNotFoundException;
 import com.manolo.jobtracker.model.User;
 import com.manolo.jobtracker.enums.ErrorCode;
 import com.manolo.jobtracker.repository.UserRepository;
+import com.manolo.jobtracker.security.PasswordValidator;
+import com.manolo.jobtracker.service.RefreshTokenService;
 import com.manolo.jobtracker.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -25,10 +29,14 @@ public class UserServiceImpl implements UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final RefreshTokenService refreshTokenService;
+    private final PasswordValidator passwordValidator;
 
-    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder) {
+    public UserServiceImpl(UserRepository userRepository, PasswordEncoder passwordEncoder, RefreshTokenService refreshTokenService, PasswordValidator passwordValidator) {
         this.userRepository = userRepository;
         this.passwordEncoder = passwordEncoder;
+        this.refreshTokenService = refreshTokenService;
+        this.passwordValidator = passwordValidator;
     }
 
     @Override
@@ -45,6 +53,7 @@ public class UserServiceImpl implements UserService {
         }
 
         User user = UserMapper.toEntity(dto);
+        passwordValidator.validate(user.getPassword());
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user = userRepository.save(user);
 
@@ -109,5 +118,48 @@ public class UserServiceImpl implements UserService {
         log.info("Ruolo aggiornato con successo: id={}, nuovoRole={}", user.getId(), user.getRole());
 
         return UserMapper.toResponse(user);
+    }
+
+    @Override
+    public void changePassword(
+            Long id,
+            ChangePasswordRequestDto dto
+    ) {
+
+        log.debug("Cambio password richiesto per userId={}", id);
+
+        User user = userRepository.findById(id)
+                .orElseThrow(() ->
+                        new UserNotFoundException(
+                                "User non trovato con id: " + id
+                        )
+                );
+
+        if (!passwordEncoder.matches(
+                dto.getOldPassword(),
+                user.getPassword()
+        )) {
+
+            throw new InvalidPasswordException(
+                    "La password attuale non è corretta"
+            );
+        }
+
+
+        passwordValidator.validate(dto.getNewPassword());
+        user.setPassword(
+                passwordEncoder.encode(
+                        dto.getNewPassword()
+                )
+        );
+
+        userRepository.save(user);
+
+        refreshTokenService.revokeAllUserTokens(id);
+
+        log.info(
+                "Password cambiata e refresh token revocati per userId={}",
+                id
+        );
     }
 }

@@ -31,6 +31,13 @@ public class User {
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<JobApplication> applications = new HashSet<>();
 
+    @OneToMany(
+            mappedBy = "user",
+            cascade = CascadeType.ALL,
+            orphanRemoval = true
+    )
+    private Set<RefreshToken> refreshTokens = new HashSet<>();
+
     @Override
     public String toString() {
         return "User{" +
