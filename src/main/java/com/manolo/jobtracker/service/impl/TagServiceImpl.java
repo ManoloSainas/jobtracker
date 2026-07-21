@@ -4,7 +4,6 @@ import com.manolo.jobtracker.dto.request.TagRequestDto;
 import com.manolo.jobtracker.dto.response.TagResponseDto;
 import com.manolo.jobtracker.mapper.TagMapper;
 import com.manolo.jobtracker.exception.ConflictException;
-import com.manolo.jobtracker.exception.TagNotFoundException;
 import com.manolo.jobtracker.model.Tag;
 import com.manolo.jobtracker.enums.ErrorCode;
 import com.manolo.jobtracker.repository.TagRepository;

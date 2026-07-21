@@ -21,10 +21,6 @@ public class JwtService {
 
     public String generateToken(UserDetails userDetails) {
 
-        CustomUserDetails customUser =
-                (CustomUserDetails) userDetails;
-
-
         return Jwts.builder()
                 .subject(userDetails.getUsername())
                 .issuedAt(new Date())
