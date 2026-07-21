@@ -29,9 +29,11 @@ public class User {
     @Column(nullable = false)
     private Role role;
 
+    @Builder.Default
     @OneToMany(mappedBy = "user", fetch = FetchType.LAZY)
     private Set<JobApplication> applications = new HashSet<>();
 
+    @Builder.Default
     @OneToMany(
             mappedBy = "user",
             cascade = CascadeType.ALL,
